@@ -23,18 +23,19 @@
 </div>
 <div class="col-md-6">
     <label class="form-label" for="photo">Photo produit</label>
-<input class="form-control" type="file" name="photo" id="photo" required>
+    <img src="{{asset('photos/'.$product->photo)}}" width="150" class="m-3"/>
+<input class="form-control" value="{{$product->photo}}" type="file" name="photo" id="photo">
 </div>
 <div class="col-md-6">
     <label class="form-label" for="description">Description produit</label>
-<textarea class="form-control" name="description" id="description" required>{{old('description')}}</textarea>
+<textarea class="form-control" name="description" id="description" required>{{$product->description}}</textarea>
 </div>
 <div class="col-md-6">
     <label class="form-label" for="category_id">Categorie</label>
     <select class="form-control" name="category_id" id="category_id" required>
         <option value="">---- Choisir une categorie ----</option>
         @foreach($categories as $category)
-            <option value="{{$category->id}}" @if ($category->id==old("category_id")) selected @endif>{{$category->name}}</option>
+            <option value="{{$category->id}}" @if ($category->id==$product->category_id) selected @endif>{{$category->name}}</option>
         @endforeach
     </select>
 </div>

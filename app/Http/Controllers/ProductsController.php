@@ -76,22 +76,31 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        
         $request->validate([
-            "name"=>"required|min:3|max:50|regex:/(^[0-9a-zA-Z ]+$)/u"
+            "name"=>"required|min:3|max:80|regex:/(^[0-9a-zA-Z ]+$)/u",
+            "price"=>"required|decimal:3",
+            "photo"=>"image|mimes:png,jpg,webp,jpeg|max:2048",
+            "description"=>"required|min:15",
+            "category_id"=>"required|numeric"
         ]);
         $inputs=$request->all();
         //traitement de la photo produit
         //verifier si l utilisateur a parcouru une image
         if($photo=$request->file("photo")){
+            //supprimer l ancien fichier
+            if(file_exists("photos/".$product->photo))
+        unlink("photos/".$product->photo);
             //changer le nom du fichier
             $newname=time().".".$photo->getClientOriginalExtension();
             //copier le fichier temporaire dans un dossier
             $photo->move("photos/",$newname);
             $inputs["photo"]=$newname;
+        }
         $product->update($inputs);
         return redirect()->route("products.index")->with("success","un produit est modifié avec succés!");
-
-    }
+         
+}
 
     /**
      * Remove the specified resource from storage.

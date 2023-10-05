@@ -6,6 +6,7 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ProductsController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +50,14 @@ Route::get("/produits",[SiteController::class,"produits"])->name("site.produits"
 Route::get("/contact",[SiteController::class,"contact"])->name("site.contact");
 Route::post("/contact/save",[SiteController::class,"save"])->name("site.save");
 
+Route::middleware(['auth'])->group(function(){
 //routes du controller category
 Route::resource('categories', CategoriesController::class);
 //routes du controller product
 Route::resource('products', ProductsController::class);
+
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
